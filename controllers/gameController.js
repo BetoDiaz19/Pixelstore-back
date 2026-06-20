@@ -1,11 +1,9 @@
 const db = require("../config/db");
 
 const getGames = (req, res) => {
-
   db.query(
     "SELECT * FROM juegos",
     (err, results) => {
-
       if (err) {
         return res.status(500).json(err);
       }
@@ -21,21 +19,17 @@ const getGames = (req, res) => {
       }));
 
       res.json(games);
-
     }
   );
-
 };
 
 const getGameById = (req, res) => {
-
   const { id } = req.params;
 
   db.query(
     "SELECT * FROM juegos WHERE id = ?",
     [id],
     (err, results) => {
-
       if (err) {
         return res.status(500).json(err);
       }
@@ -57,29 +51,21 @@ const getGameById = (req, res) => {
         description: game.descripcion,
         stock: game.stock
       });
-
     }
   );
-
 };
 
 const createGame = (req, res) => {
-
   const {
-    titulo,
-    descripcion,
-    categoria,
-    precio,
+    title,
+    description,
+    category,
+    price,
     stock,
-    imagen
+    image
   } = req.body;
 
-  if (
-    !titulo ||
-    !descripcion ||
-    !categoria ||
-    !precio
-  ) {
+  if (!title || !description || !category || !price) {
     return res.status(400).json({
       message: "Faltan campos obligatorios"
     });
@@ -90,15 +76,14 @@ const createGame = (req, res) => {
     (titulo, descripcion, categoria, precio, stock, imagen)
     VALUES (?, ?, ?, ?, ?, ?)`,
     [
-      titulo,
-      descripcion,
-      categoria,
-      precio,
+      title,
+      description,
+      category,
+      price,
       stock || 0,
-      imagen || null
+      image || null
     ],
     (err, result) => {
-
       if (err) {
         return res.status(500).json(err);
       }
@@ -107,23 +92,19 @@ const createGame = (req, res) => {
         message: "Juego agregado correctamente",
         id: result.insertId
       });
-
     }
   );
-
 };
 
 const updateGame = (req, res) => {
-
   const { id } = req.params;
-
   const {
-    titulo,
-    descripcion,
-    categoria,
-    precio,
+    title,
+    description,
+    category,
+    price,
     stock,
-    imagen
+    image
   } = req.body;
 
   db.query(
@@ -137,16 +118,15 @@ const updateGame = (req, res) => {
       imagen = ?
     WHERE id = ?`,
     [
-      titulo,
-      descripcion,
-      categoria,
-      precio,
+      title,
+      description,
+      category,
+      price,
       stock,
-      imagen,
+      image,
       id
     ],
     (err, result) => {
-
       if (err) {
         return res.status(500).json(err);
       }
@@ -160,21 +140,17 @@ const updateGame = (req, res) => {
       res.json({
         message: "Juego actualizado correctamente"
       });
-
     }
   );
-
 };
 
 const deleteGame = (req, res) => {
-
   const { id } = req.params;
 
   db.query(
     "DELETE FROM juegos WHERE id = ?",
     [id],
     (err, result) => {
-
       if (err) {
         return res.status(500).json(err);
       }
@@ -188,10 +164,8 @@ const deleteGame = (req, res) => {
       res.json({
         message: "Juego eliminado correctamente"
       });
-
     }
   );
-
 };
 
 module.exports = {
